@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  activity: MyString
+  gear_type: MyString
+  size: MyString
+  listing_name: MyString
+  summary: MyText
+  location: MyString
+  user: one
+
+two:
+  activity: MyString
+  gear_type: MyString
+  size: MyString
+  listing_name: MyString
+  summary: MyText
+  location: MyString
+  user: two
