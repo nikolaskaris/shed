@@ -28,6 +28,7 @@ class GearsController < ApplicationController
       @photos = @gear.photos
       redirect_to edit_gear_path(@gear), notice: "Saved!"
     else
+      flash[:alert] = "Please provide all information for this listing."
       render :new
     end
   end
@@ -52,6 +53,7 @@ class GearsController < ApplicationController
       redirect_to edit_gear_path(@gear), notice: "Updated!"
     else
       render :edit
+      flash[:alert] = "Please provide all information for this listing."
     end
   end
 
@@ -61,6 +63,6 @@ class GearsController < ApplicationController
   end
 
   def gear_params
-    params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location)
+    params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location, :price)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170517163414) do
+ActiveRecord::Schema.define(version: 20170519193011) do
 
   create_table "equipment", force: :cascade do |t|
     t.string   "activity"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20170517163414) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "price"
+    t.float    "latitude"
+    t.float    "longitude"
     t.index ["user_id"], name: "index_gears_on_user_id"
   end
 
@@ -48,6 +50,19 @@ ActiveRecord::Schema.define(version: 20170517163414) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.index ["gear_id"], name: "index_photos_on_gear_id"
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "gear_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "price"
+    t.integer  "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gear_id"], name: "index_reservations_on_gear_id"
+    t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

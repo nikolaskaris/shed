@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  gear: one
+  start_date: 2017-05-19 15:30:18
+  end_date: 2017-05-19 15:30:18
+  price: 1
+  total: 1
+
+two:
+  user: two
+  gear: two
+  start_date: 2017-05-19 15:30:18
+  end_date: 2017-05-19 15:30:18
+  price: 1
+  total: 1
