@@ -51,7 +51,9 @@
       </div>
       <div class="col-md-4">
         <!-- Reservation Form -->
-        <%= render 'reservations/form' %>
+        <% if current_user != @gear.user %>
+          <%= render 'reservations/form' %>
+        <% end %>
       </div>
     </div>
 

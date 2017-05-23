@@ -10,19 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170519193011) do
+ActiveRecord::Schema.define(version: 20170523164429) do
 
-  create_table "equipment", force: :cascade do |t|
-    t.string   "activity"
-    t.string   "gear_type"
-    t.string   "size"
-    t.string   "listing_name"
-    t.text     "summary"
-    t.string   "location"
-    t.integer  "user_id"
+  create_table "conversations", force: :cascade do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["user_id"], name: "index_equipment_on_user_id"
   end
 
   create_table "gears", force: :cascade do |t|
@@ -39,6 +33,16 @@ ActiveRecord::Schema.define(version: 20170519193011) do
     t.float    "latitude"
     t.float    "longitude"
     t.index ["user_id"], name: "index_gears_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "conversation_id"
+    t.integer  "user_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "photos", force: :cascade do |t|
@@ -82,6 +86,8 @@ ActiveRecord::Schema.define(version: 20170519193011) do
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.string   "phone_number"
+    t.text     "description"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
