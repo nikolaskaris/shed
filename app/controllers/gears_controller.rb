@@ -8,6 +8,11 @@ class GearsController < ApplicationController
 
   def show
     @photos = @gear.photos
+
+    @booked = Reservation.where("gear_id = ? AND user_id = ?", @gear.id, current_user.id).present? if current_user
+
+    @reviews = @gear.reviews
+    @hasReview = @reviews.find_by(user_id: current_user.id) if current_user
   end
 
   def new

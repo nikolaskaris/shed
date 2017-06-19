@@ -10,17 +10,16 @@
         <div class="row">
           <div class="col-md-6 select">
             <div class="form-group">
-              <label>Activity</label>
               <%= f.select :activity, [["Surfing", "Surfing"], ["Skiing", "Skiing"], ["Biking", "Biking"]],
-              id: "gear_type", prompt: "Select...", class: "form-control" %>
+              id: "activity", prompt: "Activity", class: "form-control" %>
             </div>
           </div>
 
           <div class="col-md-6 select">
             <div class="form-group">
-              <label>Gear Type</label>
-              <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Bike", "Bike"]],
-              id: "gear_type", prompt: "Select...", class: "form-control" %>
+              <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Mountain Bike", 
+              "Mountain Bike"], ["Road Bike", "Road Bike"], ["Other", "Other"]], id: "gear_type", 
+              prompt: "Gear Type", class: "form-control" %>
             </div>
           </div>
         </div>

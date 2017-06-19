@@ -1,0 +1,104 @@
+<div id="wrapper">
+  
+  <div id="sidebar">
+    <div id="widget" class="sticky">
+      
+    </div>    
+  </div>
+
+  <div id="article">
+    
+  <div class="row">
+    <%= search_form_for @search, url: search_path do |f| %>
+
+      <div class="row">
+        <div class="col-md-3">
+          <%= text_field_tag :start_date, params[:start_date], placeholder: "Start Date", class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= text_field_tag :end_date, params[:end_date], placeholder: "End Date", class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.text_field :price_gteq, placeholder: "Min Price", class: "form-control" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.text_field :price_lteq, placeholder: "Max Price", class: "form-control" %>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Activity</label>
+            <%= f.select :activity, [["Surfing", "Surfing"], ["Skiing", "Skiing"], ["Biking", "Biking"]],
+              prompt: "Select...", class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Gear Type</label>
+            <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Bike", "Bike"]],
+              prompt: "Select...", class: "form-control" %>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <%= f.submit "Search", class: "btn btn-primary" %>
+      </div>
+
+    <% end %>
+
+    <hr>
+
+    <div class="row">
+      <% @arrGear.each do |gear| %>
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading preview">
+              <%= image_tag gear.photos[0].image.url(:medium) if gear.photos.length > 0 %>
+            </div>
+            <div class="panel-body">
+              <%= link_to gear.listing_name, gear %>
+            </div>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    $("#start_date").datepicker({
+      dateFormat: 'dd-mm-yy',
+      minDate: 0, 
+      maxDate: '3m'
+      onSelect: function(selected) {
+        $('#end_date').datepicker("option", "minDate", selected);
+        $('#end_date').attr('disabled', false);
+      }
+    });
+
+    $("#end_date").datepicker({
+      dateFormat: 'dd-mm-yy',
+      minDate: 0, 
+      maxDate: '3m'
+      onSelect: function(selected) {
+        $('#start_date').datepicker("option", "maxDate", selected);
+      }
+    });
+  })
+
+
+</script>
