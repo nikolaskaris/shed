@@ -12,17 +12,11 @@
     <%= search_form_for @search, url: search_path do |f| %>
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
           <%= text_field_tag :start_date, params[:start_date], placeholder: "Start Date", class: "form-control" %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
           <%= text_field_tag :end_date, params[:end_date], placeholder: "End Date", class: "form-control" %>
-        </div>
-        <div class="col-md-3">
-          <%= f.text_field :price_gteq, placeholder: "Min Price", class: "form-control" %>
-        </div>
-        <div class="col-md-3">
-          <%= f.text_field :price_lteq, placeholder: "Max Price", class: "form-control" %>
         </div>
 
       </div>
