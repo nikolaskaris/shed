@@ -259,7 +259,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   devise (~> 4.2)
-  figaro (~> 1.1, >= 1.1.1)
+  figaro
   font-awesome-sass
   geocoder
   jbuilder (~> 2.0)

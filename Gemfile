@@ -27,7 +27,7 @@ gem 'private_pub'
 gem 'thin'
 gem 'ransack'
 
-gem 'figaro', '~> 1.1', '>=1.1.1' 
+gem 'figaro'
 
 
 group :development, :test do

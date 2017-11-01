@@ -46,9 +46,9 @@ Rails.application.configure do
     authentication: 'plain', 
     address:        "smtp.mailgun.org",
     port:           587,
-    domain:         "sandboxdc75c5d333854d23b783d7fbbce1bb80.mailgun.org",
-    user_name:      "postmaster@sandboxdc75c5d333854d23b783d7fbbce1bb80.mailgun.org",
-    password:       "47d1f389db9269607c655c5c7cfbccc3"
+    domain:         ENV['MAILGUN_DOMAIN'],
+    user_name:      ENV['MAILGUN_USERNAME'],
+    password:       ENV['MAILGUN_PASSWORD']
   }
 
   config.paperclip_defaults = {
@@ -56,12 +56,14 @@ Rails.application.configure do
     path:           ':class/:attachment/:id/:style/:filename',
     s3_host_name:   's3-us-east-2.amazonaws.com',
     s3_credentials: {
-      bucket: 'shed2017',
-      access_key_id: 'AKIAIB544CKBAVQETDIA',
-      secret_access_key: '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',
+      bucket: ENV['AWS_BUCKET'],
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY_ID'],
       s3_region: 'us-east-2'
     }
   }
 
   config.generators.assets = false
 end
+
+  

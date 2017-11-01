@@ -1,5 +1,5 @@
 class GearsController < ApplicationController
-  before_action :set_gear, only: [:show, :edit, :update]
+  before_action :set_gear, except: [:index, :new, :create]
   before_action :authenticate_user!, except: [:show]
 
   def index
