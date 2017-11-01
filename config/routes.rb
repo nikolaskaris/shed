@@ -5,7 +5,20 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :users, only: [:show]
-  resources :gears
+  resources :gears, except: [:edit] do
+    member do
+      get 'listing'
+      get 'pricing'
+      get 'description'
+      get 'photo_upload'
+      get 'location'
+    end
+  end
+
+
+
+
+
   resources :photos
 
   resources :gears do
@@ -27,5 +40,9 @@ Rails.application.routes.draw do
   get '/your_reservations' => 'reservations#your_reservations'
 
   get '/search' => 'pages#search'
+
+
+  # ------ Second Tutorial -------#
+  get 'dashboard' => 'dashboards#index'
  
 end

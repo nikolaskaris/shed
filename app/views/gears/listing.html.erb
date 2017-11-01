@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-md-3">
+    <%= render 'gear_menu' %>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Listing
+      </div>
+
+      <div class="panel-body">
+        <div class="container">
+          <%= form_for @gear do |f| %>
+
+              <div class="row">
+                <div class="col-md-6 select">
+                  <div class="form-group">
+                    <%= f.select :activity, [["Surfing", "Surfing"], ["Skiing", "Skiing"], ["Biking", "Biking"]],
+                    id: "activity", prompt: "Activity", class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="col-md-6 select">
+                  <div class="form-group">
+                    <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Mountain Bike", 
+                    "Mountain Bike"], ["Road Bike", "Road Bike"], ["Other", "Other"]], id: "gear_type", 
+                    prompt: "Gear Type", class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                  <div class="form-group">
+                    <label>Size</label>
+                    <%= f.text_field :size, placeholder: "Size",  id: "gear_type", prompt: "Select...", class: "form-control" %>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group">
+                  <label>Listing Name</label>
+                  <%= f.text_field :listing_name, placeholder: "Listing Name", class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group">
+                  <label>Summary</label>
+                  <%= f.text_area :summary, rows: 5, placeholder: "Describe your gear", class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group">
+                  <label>Location</label>
+                  <%= f.text_field :location, placeholder: "What is the pickup address?", class: "form-control" %>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Daily Price</label>
+                    <div class="input-group">
+                      <div class="input-group-addon">$</div>
+                      <%= f.text_field :price, placeholder: "eg. $20", class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <span class="btn btn-default btn-file">
+                      <i class="fa fa-cloud-upload fa-large"></i> Upload Photos
+                      <%= file_field_tag "images[]", type: :file, multiple: true %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="photos"><%= render 'photos/list' %></div>
+
+              <div class="actions">
+                <%= f.submit "Save", class: "btn btn-primary" %>
+              </div>
+
+            <% end %>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

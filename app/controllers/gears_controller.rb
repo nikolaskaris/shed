@@ -31,10 +31,9 @@ class GearsController < ApplicationController
       end
 
       @photos = @gear.photos
-      redirect_to edit_gear_path(@gear), notice: "Saved!"
+      redirect_to listing_gear_path(@gear), notice: "Saved!"
     else
-      flash[:alert] = "Please provide all information for this listing."
-      render :new
+      render :new, notice: "Please provide all information for this listing."
     end
   end
 
@@ -46,6 +45,21 @@ class GearsController < ApplicationController
     end
   end
 
+  def listing
+  end
+
+  def pricing
+  end
+
+  def description
+  end
+
+  def photo_upload
+  end
+
+  def location
+  end
+
   def update
     if @gear.update(gear_params)
 
@@ -55,7 +69,7 @@ class GearsController < ApplicationController
         end
       end
 
-      redirect_to edit_gear_path(@gear), notice: "Updated!"
+      redirect_to listing_gear_path(@gear), notice: "Updated!"
     else
       render :edit
       flash[:alert] = "Please provide all information for this listing."

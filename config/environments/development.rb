@@ -43,12 +43,24 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    authentication: :plain, 
+    authentication: 'plain', 
     address:        "smtp.mailgun.org",
     port:           587,
     domain:         "sandboxdc75c5d333854d23b783d7fbbce1bb80.mailgun.org",
     user_name:      "postmaster@sandboxdc75c5d333854d23b783d7fbbce1bb80.mailgun.org",
     password:       "47d1f389db9269607c655c5c7cfbccc3"
+  }
+
+  config.paperclip_defaults = {
+    storage:        :s3,
+    path:           ':class/:attachment/:id/:style/:filename',
+    s3_host_name:   's3-us-east-2.amazonaws.com',
+    s3_credentials: {
+      bucket: 'shed2017',
+      access_key_id: 'AKIAIB544CKBAVQETDIA',
+      secret_access_key: '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',
+      s3_region: 'us-east-2'
+    }
   }
 
   config.generators.assets = false

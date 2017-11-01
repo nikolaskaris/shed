@@ -13,25 +13,22 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'sass-rails', '>= 3.2'
 
-gem 'devise'
-
-gem 'toastr-rails'
-
+gem 'devise', '~> 4.2'
+gem 'toastr-rails', '~> 1.0'
 gem 'mailgun-ruby', '~>1.1.6', require: 'mailgun'
 
 gem 'font-awesome-sass'
-
 gem 'paperclip'
+gem 'aws-sdk', '~> 2.8'
 
 gem 'geocoder'
-
 gem 'jquery-ui-sass-rails'
-
 gem 'private_pub'
-
 gem 'thin'
-
 gem 'ransack'
+
+gem 'figaro', '~> 1.1', '>=1.1.1' 
+
 
 group :development, :test do
   gem 'byebug'

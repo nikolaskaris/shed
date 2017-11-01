@@ -18,6 +18,8 @@
   </div>
 <% end %>
 
+<br>
+
 <div class="row">
   <% @gears.each do |gear| %>
     <div class="col-md-4">
@@ -26,6 +28,7 @@
           <%= image_tag gear.photos[0].image.url(:medium) if gear.photos.length > 0 %>
         </div>
         <div class="panel-body">
+        <%= image_tag avatar_url(gear.user), class: "img-circle avatar-small" %>&nbsp;
           <%= link_to gear.listing_name, gear %>
         </div>
       </div>
@@ -34,12 +37,13 @@
   <% end %>
 </div>
 
+
 <script type="text/javascript">
   $(function() {
     $("#start_date").datepicker({
       dateFormat: 'dd-mm-yy',
       minDate: 0, 
-      maxDate: '3m'
+      maxDate: '3m',
       onSelect: function(selected) {
         $('#end_date').datepicker("option", "minDate", selected);
         $('#end_date').attr('disabled', false);
@@ -49,7 +53,7 @@
     $("#end_date").datepicker({
       dateFormat: 'dd-mm-yy',
       minDate: 0, 
-      maxDate: '3m'
+      maxDate: '3m',
       onSelect: function(selected) {
         $('#start_date').datepicker("option", "maxDate", selected);
       }

@@ -14,7 +14,7 @@ class PagesController < ApplicationController
     if session[:gear_search] && session[:gear_search] != ""
       @gears_address = Gear.near(session[:gear_search], 5, order: 'distance')
     else
-      @gears_address = Gear.where(active: true).all
+      @gears_address = Gear.all
     end
 
     @search = @gears_address.ransack(params[:q])
