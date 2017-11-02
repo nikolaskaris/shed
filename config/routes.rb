@@ -15,11 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-
-
-
-
-  resources :photos
+  resources :photos, only: [:create, :destroy]
 
   resources :gears do
     resources :reservations, only: [:create]

@@ -15,14 +15,14 @@
             </div>
           </div>
 
-          <div class="col-md-6 select">
-            <div class="form-group">
-              <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Mountain Bike", 
-              "Mountain Bike"], ["Road Bike", "Road Bike"], ["Other", "Other"]], id: "gear_type", 
-              prompt: "Gear Type", class: "form-control" %>
+            <div class="col-md-6 select">
+              <div class="form-group">
+                <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Mountain Bike", 
+                "Mountain Bike"], ["Road Bike", "Road Bike"], ["Other", "Other"]], id: "gear_type", 
+                prompt: "Gear Type", class: "form-control" %>
+              </div>
             </div>
           </div>
-        </div>
 
         <div class="row">
             <div class="form-group">
@@ -78,7 +78,7 @@
         <div id="photos"><%= render 'photos/list' %></div>
 
         <div class="actions">
-          <%= f.submit "Save", class: "btn btn-primary" %>
+          <%= f.submit "Create your gear listing", class: "btn btn-primary" %>
         </div>
 
       <% end %>

@@ -1,6 +1,7 @@
 class GearsController < ApplicationController
   before_action :set_gear, except: [:index, :new, :create]
   before_action :authenticate_user!, except: [:show]
+  before_action :is_authorized, only: [:listing, :pricing, :description, :photo_upload, :location, :update]
 
   def index
     @gears = current_user.gears
@@ -33,7 +34,8 @@ class GearsController < ApplicationController
       @photos = @gear.photos
       redirect_to listing_gear_path(@gear), notice: "Saved!"
     else
-      render :new, notice: "Please provide all information for this listing."
+      flash[:alert] = "Please provide all information for your gear listing"
+      render :new
     end
   end
 
@@ -55,6 +57,7 @@ class GearsController < ApplicationController
   end
 
   def photo_upload
+    @photos = @gear.photos
   end
 
   def location
@@ -79,6 +82,11 @@ class GearsController < ApplicationController
   private
   def set_gear
     @gear = Gear.find(params[:id])
+  end
+
+  def is_authorized
+    redirect_to root_path, alert: "You don't have permission" unless current_user.id == @gear.user_id
+    
   end
 
   def gear_params
