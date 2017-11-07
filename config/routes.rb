@@ -13,14 +13,11 @@ Rails.application.routes.draw do
       get 'photo_upload'
       get 'location'
     end
-  end
-
-  resources :photos, only: [:create, :destroy]
-
-  resources :gears do
+    resources :photos, only: [:create, :destroy]
     resources :reservations, only: [:create]
   end
 
+  
   resources :conversations, only: [:index, :create] do
     resources :messages, only: [:index, :create]
   end

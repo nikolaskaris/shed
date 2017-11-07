@@ -9,11 +9,6 @@ class GearsController < ApplicationController
 
   def show
     @photos = @gear.photos
-
-    @booked = Reservation.where("gear_id = ? AND user_id = ?", @gear.id, current_user.id).present? if current_user
-
-    @reviews = @gear.reviews
-    @hasReview = @reviews.find_by(user_id: current_user.id) if current_user
   end
 
   def new
@@ -36,14 +31,6 @@ class GearsController < ApplicationController
     else
       flash[:alert] = "Please provide all information for your gear listing"
       render :new
-    end
-  end
-
-  def edit
-    if current_user.id == @gear.user.id
-      @photos = @gear.photos
-    else
-      redirect_to root_path, notice: "You don't have permission."
     end
   end
 
