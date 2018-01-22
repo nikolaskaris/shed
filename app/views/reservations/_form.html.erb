@@ -1,5 +1,14 @@
 <%= form_for ([@gear, @gear.reservations.new]) do |f| %>
 
+  <%= f.text_field :start_date %>
+  <%= f.text_field :end_date %>
+
+
+  <br/>
+  <%= f.submit "Book Now", class: "btn btn-normal btn-block" %>
+
+
+
   <div class="row">
     <div class="col-md-12 price_tag">
       <span>$<%= @gear.price %></span>
@@ -45,6 +54,22 @@
 
 <% end %>
 
+
+<!-- SCRIPT --> 
+<script>
+  $(function() {
+    $('#reservation_start_date').datepicker({
+      dateFormat: 'dd-mm-yy'
+    });
+    $('#reservation_end_date').datepicker({
+      dateFormat: 'dd-mm-yy'
+    });
+  });
+
+</script>
+
+
+<!--
 <script type="text/javascript">
 
   function unavailable(date) {
@@ -161,3 +186,5 @@
 
   });
 </script>
+
+-->

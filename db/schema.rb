@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013035936) do
+ActiveRecord::Schema.define(version: 20180114233152) do
 
   create_table "conversations", force: :cascade do |t|
     t.integer  "sender_id"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20171013035936) do
     t.integer  "price"
     t.float    "latitude"
     t.float    "longitude"
+    t.boolean  "active"
     t.index ["user_id"], name: "index_gears_on_user_id"
   end
 

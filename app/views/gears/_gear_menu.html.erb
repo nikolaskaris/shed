@@ -1,17 +1,39 @@
 <ul class="sidebar-list">
   <li class="sidebar-item">
     <%= link_to "Listing", listing_gear_path, class: "sidebar-link active" %>
+    <span class="pull-right text-babu"><i class="fa fa-check"></i></span>
   </li>
   <li class="sidebar-item">
     <%= link_to "Pricing", pricing_gear_path, class: "sidebar-link active" %>
+    <% if !@gear.price.blank? %>
+      <span class="pull-right text-babu"><i class="fa fa-check"></i></span>  
+    <% end %>
   </li>
   <li class="sidebar-item">
     <%= link_to "Description", description_gear_path, class: "sidebar-link active" %>
+    <% if !@gear.listing_name.blank? %>
+      <span class="pull-right text-babu"><i class="fa fa-check"></i></span>  
+    <% end %>
   </li>
   <li class="sidebar-item">
     <%= link_to "Photo", photo_upload_gear_path, class: "sidebar-link active" %>
+    <% if !@gear.photos.blank? %>
+      <span id= "photo_check" class="pull-right text-babu"><i class="fa fa-check"></i></span>  
+    <% end %>
   </li>
   <li class="sidebar-item">
     <%= link_to "Location", location_gear_path, class: "sidebar-link active" %>
+    <% if !@gear.location.blank? %>
+      <span class="pull-right text-babu"><i class="fa fa-check"></i></span>  
+    <% end %>
   </li>
 </ul>
+
+<hr/>
+
+<% is_ready = !@gear.price.blank? && !@gear.listing_name.blank? && !@gear.photos.blank? && !@gear.location.blank? %>
+
+<%= form_for @gear do |f| %>
+  <%= f.hidden_field :active, value: true %>
+  <%= f.submit "Publish", id: "publish_button", class: "btn btn-normal btn-block", disabled: !is_ready %>
+<% end %>

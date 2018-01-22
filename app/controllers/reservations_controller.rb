@@ -21,9 +21,24 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = current_user.reservations.create(reservation_params)
+    gear = Gear.find(params[:gear_id])
 
-    redirect_to @reservation.gear, notice: "Your reservation has been created!"
+    if current_user == gear.user
+      flash[:alert] = "You cannot book your own gear."
+    else
+      start_date = Date.parse(reservation_params[:start_date])
+      end_date = Date.parse(reservation_params[:end_date])
+      days = (end_date - start_date).to_i + 1
+
+      @reservation = current_user.reservation.build(reservation_params)
+      @reservation.gear = gear
+      @reservation.price = gear.price
+      @reservation.total = gear.price * days
+      @reservation.save
+
+      flash[:notice] = "Booked Successfully!"
+    end
+    redirect_to gear
   end
 
   def your_rentals
@@ -44,6 +59,6 @@ class ReservationsController < ApplicationController
     end
 
     def reservation_params
-      params.require(:reservation).permit(:start_date, :end_date, :price, :total, :gear_id)
+      params.require(:reservation).permit(:start_date, :end_date)
     end
 end

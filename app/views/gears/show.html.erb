@@ -1,71 +1,73 @@
-    <!-- Image -->
-    <div class="row">
-      <div class="col-md-12">
-        <%= image_tag @photos[0].image.url(:medium), class: "img-responsive" if @photos.length > 0 %>
-      </div>
-    </div>
-
-    <br>
-
-    <!-- Main Info -->
+<!-- Image -->
+<div class="row">
+  <div class="col-md-6">
+    <%= image_tag @gear.cover_photo(nil) %>
+  </div>
+  <div class="col-md-6">
+    <!-- Listing Name -->
     <div class="row">
       <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-3 text-center">
-            <%= image_tag avatar_url(@gear.user), class: "img-circle avatar-large" %><br><br>
-            <%= @gear.user.fullname %>
-          </div>
+        <h1> <%= @gear.listing_name %></h1>
+        <%= @gear.location %>
+      </div>
+      <div class="col-md-4 text-center">
+        <%= image_tag avatar_url(@gear.user), class: "img-circle avatar-large" %> <br/><br/>
+        <%= @gear.user.fullname %>
+      </div>
 
-          <div class="col-md-9">
-            <h4><%= @gear.listing_name %></h4>
-            <%= @gear.location %>
+    </div>
+    <hr>
 
-            <div class="row text-center row-space-1">
-              <div class="col-sm-4">
-                <i class="fa fa-bicycle fa-2x"></i>
-              </div>
-              <div class="col-sm-4">
-                <i class="fa fa-balance-scale fa-2x"></i>
-              </div>
-              <div class="col-sm-4">
-                <i class="fa fa-anchor fa-2x"></i>
-              </div>
-            </div>
-
-            <div class="row text-center">
-              <div class="col-sm-4">
-                <%= @gear.activity %>
-              </div>
-              <div class="col-sm-4">
-                <%= @gear.gear_type %>
-              </div>
-              <div class="col-sm-4">
-                <%= @gear.size %>
-              </div>
-            </div>
-          </div>    
+    <!-- Gear Info -->
+    <div class="row text-babu">
+      <div class="row text-center row-space-1">
+        <div class="col-md-4">
+          <i class="fa fa-home fa-2x"></i>
+        </div>
+        <div class="col-md-4">
+          <i class="fa fa-user-circle-o fa-2x"></i>
+        </div>
+        <div class="col-md-4">
+          <i class="fa fa-bed fa-2x"></i>
         </div>
       </div>
-      <div class="col-md-4">
-        <!-- Reservation Form -->
-        <% if current_user != @gear.user %>
-          <%= render 'reservations/form' %>
-        <% end %>
+
+      <div class="row text-center">
+        <div class="col-md-4"><%= @gear.activity %></div>
+        <div class="col-md-4"><%= @gear.gear_type %></div>
+        <div class="col-md-4"><%= @gear.size %></div>
       </div>
     </div>
+    <hr>
 
     <!-- About -->
     <div class="row">
       <div class="col-md-12">
-        <h2>About This Listing</h2>
+        <h3>About This Listing</h3>
         <p><%= @gear.summary %></p>
       </div>
     </div>
+    <hr>
+
+    <!-- RESERVATIONS --> 
+    <div class="col-md-10">
+    
+      <!-- RESERVATION FORM --> 
+      <%= render 'reservations/form' %>
+  </div>
+  </div>
+</div>
+<hr>
+
+<div class="row">
+  
+  <!-- LEFT PANEL -->
+  <div class="col-md-8">
 
     <!-- Carousel -->
     <div class="row">
-      <div class="col-md-10 col-md-offset-1">
-        
+
+      <% if @photos.length > 0 %>
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
           <% if @photos %>
@@ -78,12 +80,10 @@
 
           <!-- Wrapper for slides -->
           <div class="carousel-inner">
-            <% if @photos %>
-              <% @photos.each do |photo| %>
-              <div class="item <%= 'active' if photo.id == @photos[0].id %>">
-                <%= image_tag photo.image.url(:medium) %>
-              </div>
-              <% end %>
+            <% @photos.each do |photo| %>
+            <div class="item <%= 'active' if photo.id == @photos[0].id %>">
+              <%= image_tag photo.image.url() %>
+            </div>
             <% end %>
           </div>
 
@@ -97,28 +97,13 @@
             <span class="sr-only">Next</span>
           </a>
         </div>
-      </div>
+      <% end %>
     </div>
-
-    <br>
+    <hr>
     <hr>
 
-    <!-- Reviews --> 
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Reviews <span id="average_rating"></span> (<%= @reviews.count %>)</h3>
-        <div class="container">
-          <div>
-            <%= render 'reviews/form' if @booked && !@hasReview %>
-          </div>
-          <div>
-            <%= render 'reviews/list' %>
-          </div>
-        </div>
-      </div> 
-    </div>
 
-    <!-- Google Map -->
+    <!-- GOOGLE MAP -->
     <div class="row">
       <div class="col-md-12">
         
@@ -144,6 +129,12 @@
               position: gearLocation,
               map: map,
             });
+
+            var infoWindow = new google.maps.InfoWindow({
+              content: '<div id="content"><%= image_tag @gear.cover_photo(:thumb) %></div>'
+            });
+
+            infoWindow.open(map, marker);
           }
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC18iSndZV_8QnbWOareqa9PUwJ6fPrTvQ&callback=initMap">
@@ -151,26 +142,53 @@
 
       </div>
     </div>
+    <hr>
 
-    <!-- Close by Rooms -->
-    <h3>Nearby</h3>
+
+    <!-- NEARBY ROOMS -->
     <div class="row">
+      <h3>Nearby</h3>
       <% for gear in @gear.nearbys(10) %>
-
         <div class="col-md-4">
           <div class="panel panel-default">
             <div class="panel-heading preview">
-              <%= image_tag gear.photos[0].image.url(:medium) %>
+              <%= image_tag gear.cover_photo(:medium) %>
             </div>
             <div class="panel-body">
-              <%= link_to gear.listing_name, gear %><br>
+              <%= link_to gear.listing_name, gear %> <br/>
               (<%= gear.distance.round(2) %> miles away)
             </div>
           </div>
         </div>
-
       <% end %>
     </div>
+
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  
+</div>
+
+
+    
+
+
+    <!-- Reviews --> 
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Reviews <span id="average_rating"></span> (<%= @reviews.count %>)</h3>
+        <div class="container">
+          <div>
+            <%= render 'reviews/form' if @booked && !@hasReview %>
+          </div>
+          <div>
+            <%= render 'reviews/list' %>
+          </div>
+        </div>
+      </div> 
+    </div>
+
 
   </div>
 </div>

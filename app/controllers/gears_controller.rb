@@ -56,7 +56,11 @@ class GearsController < ApplicationController
   end
 
   def update
-    if @gear.update(gear_params)
+
+    new_params = gear_params
+    new_params = gear_params.merge(active: true) if is_ready_gear
+
+    if @gear.update(new_params)
 
       if params[:images]
         params[:images].each do |image|
@@ -78,7 +82,10 @@ class GearsController < ApplicationController
 
   def is_authorized
     redirect_to root_path, alert: "You don't have permission" unless current_user.id == @gear.user_id
-    
+  end
+
+  def is_ready_gear
+    !@gear.price.blank? && !@gear.listing_name.blank? && !@gear.photos.blank? && !@gear.location.blank?
   end
 
   def gear_params
