@@ -1,9 +1,12 @@
+/*
+ *= require jquery-ui/datepicker
+*/
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "toastr";
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import "jquery.ui.datepicker";
 
 body {  
   color: #565a5c;
