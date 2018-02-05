@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       get 'description'
       get 'photo_upload'
       get 'location'
+      get 'preload'
+      get 'preview'
     end
     resources :photos, only: [:create, :destroy]
     resources :reservations, only: [:create]
@@ -26,11 +28,9 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :destroy]
   end
 
-  get '/preload' => 'reservations#preload'
-  get '/preview' => 'reservations#preview'
 
   get '/your_rentals' => 'reservations#your_rentals'
-  get '/your_reservations' => 'reservations#your_reservations'
+  get '/your_bookings' => 'reservations#your_bookings'
 
   get '/search' => 'pages#search'
 

@@ -1,80 +1,53 @@
-<%= form_for ([@gear, @gear.reservations.new]) do |f| %>
-
-  <%= f.text_field :start_date %>
-  <%= f.text_field :end_date %>
-
-
-  <br/>
-  <%= f.submit "Book Now", class: "btn btn-normal btn-block" %>
-
-
-
-  <div class="row">
-    <div class="col-md-12 price_tag">
-      <span>$<%= @gear.price %></span>
-      <span class="pull-right">Per Day</span>
-    </div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <span><i class="fa fa-bolt" style="color: #ffb400"></i> $<%= @gear.price %></span>
+    <span class="pull-right">Per Night</span>
   </div>
-  
-  <div class="row">
-    <div class="col-md-6">
-      <label>Pick Up</label>
-      <%= f.text_field :start_date, readonly: 'true', placeholder: 'Start Date', class: 'form-control' %>
-    </div>
-    <div class="col-md-6">
-      <label>Drop Off</label>
-      <%= f.text_field :end_date, readonly: 'true', placeholder: 'End Date', class: 'form-control', disabled: 'true' %>
-    </div>
+  <div class="panel-body">
+    <%= form_for ([@gear, @gear.reservations.new]) do |f| %>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Pick Up</label>
+          <%= f.text_field :start_date, readonly: true, placeholder: "Pick Up", class: "form-control datepicker" %>
+        </div>
+        <div class="col-md-6">
+          <label>Drop Off</label>
+          <%= f.text_field :end_date, readonly: true, placeholder: "Drop Off", class: "form-control datepicker", disabled: true %>
+        </div>
+      </div>
+
+      <h4 class="message-alert text-center"><span id="message"></span></h4>
+      <div id="preview" style="display: none">
+        <table class="reservation-table">
+          <tbody>
+            <tr>
+              <td>Price</td>
+              <td class="text-right"> $<%= @gear.price %></td>
+            </tr>
+            <tr>
+              <td>Day(s)</td>
+              <td class="text-right">x <span id="reservation_days"></span></td>
+            </tr>
+            <tr>
+              <td class="total">Total</td>
+              <td class="text-right"> $<span id="reservation_total"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br/>
+      <%= f.submit "Book Now", id: "btn-book", class: "btn btn-normal btn-block", disabled: true %>
+    <% end %>
   </div>
-
-  <%= f.hidden_field :gear_id, value: @gear.id %>
-  <%= f.hidden_field :price, value: @gear.price %>
-  <%= f.hidden_field :total, id: 'reservation_total' %>
-
-  <h4><span id="message"></span></h4>
-  <div id="preview" style="display: none">
-
-    <table class="reservation-table">
-      <tbody>
-        <tr>
-          <td>Day(s)</td>
-          <td><span id="reservation_days"></span></td>
-        </tr>
-        <tr>
-          <td>Total</td>
-          <td>$<span id="reservation_sum"></span></td>
-        </tr>
-      </tbody>
-    </table>
-    <br>
-  </div>
-
-    <br>
-  <%= f.submit "Book Now", id: "btn_book", class: "btn btn-primary wide", disabled: 'true' %>
-
-<% end %>
-
+</div>
 
 <!-- SCRIPT --> 
 <script>
-  $(function() {
-    $('#reservation_start_date').datepicker({
-      dateFormat: 'dd-mm-yy'
-    });
-    $('#reservation_end_date').datepicker({
-      dateFormat: 'dd-mm-yy'
-    });
-  });
 
-</script>
-
-
-<!--
-<script type="text/javascript">
-
-  function unavailable(date) {
-    dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
-    return [$.inArray(dmy, unavailableDates) == -1]
+  function checkDate(date) {
+    dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+    return [$.inArray(dmy, unavailableDates) == -1];
   }
 
   $(function() {
@@ -82,13 +55,12 @@
     unavailableDates = [];
 
     $.ajax({
-      url: '/preload', 
-      data: {'gear_id': <%= @gear.id %>},
-      dataType: 'json', 
+      url: '<%= preload_gear_path(@gear) %>',
+      dataType: 'json',
       success: function(data) {
 
         $.each(data, function(arrID, arrValue) {
-          for(var d= new Date(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
+          for(var d = newDate(arrValue.start_date); d <= new Date(arrValue.end_date); d.setDate(d.getDate() + 1)) {
             unavailableDates.push($.datepicker.formatDate('d-m-yy', d));
           }
         });
@@ -96,84 +68,77 @@
         $('#reservation_start_date').datepicker({
           dateFormat: 'dd-mm-yy',
           minDate: 0,
-          maxDate: '3m',
-          beforeShowDay: unavailable,
+          maxDate: '3m',     // Change this maxDate to allow users to book further out than 3 months
+          beforeShowDay: checkDate,
           onSelect: function(selected) {
             $('#reservation_end_date').datepicker("option", "minDate", selected);
-            $('#reservation_end_date').attr('disabled', false);
+            $('#reservation_end_date').attr("disabled", false);
 
-            var start_date = $(this).datepicker('getDate');
-            var end_date   = $('#reservation_end_date').datepicker('getDate');
-            var days       = (end_date - start_date)/1000/60/60/24 + 1
+            var start_date = $('#reservation_start_date').datepicker('getDate');
+            var end_date = $('#reservation_end_date').datepicker('getDate');
+            var days = (end_date - start_date)/1000/60/60/24 + 1;
 
             var input = {
               'start_date': start_date,
-              'end_date' : end_date,
-              'gear_id' : <%= @gear.id %>
+              'end_date': end_date
             }
 
             $.ajax({
-              url: "/preview",
-              data: input,
+              url: '<%= preview_gear_path(@gear) %>',
+              data: input, 
               success: function(data) {
 
-                if (data.conflict) {
-                  $('#message').text("This date range is not available.");
+                if(data.conflict) {
+                  $('#message').text("These dates are not available.");
                   $('#preview').hide();
-                  $('#btn_book').attr('disabled', true);
-
+                  $('#btn-book').attr('disabled', true);
                 } else {
-                  
+                  $('#message').text("");
                   $('#preview').show();
-                  $('#btn_book').attr('disabled', false);
+                  $('#btn-book').attr('disabled', false);
 
                   var total = days * <%= @gear.price %>
                   $('#reservation_days').text(days);
-                  $('#reservation_sum').text(total);
-                  $('#reservation_total').val(total);
+                  $('#reservation_total').text(total);
                 }
               }
             });
           }
         });
-
         $('#reservation_end_date').datepicker({
           dateFormat: 'dd-mm-yy',
           minDate: 0,
-          maxDate: '3m',
-          beforeShowDay: unavailable,
+          maxDate: '3m',    // Change this maxDate to allow users to book further out than 3 months
+          beforeShowDay: checkDate,
           onSelect: function(selected) {
             $('#reservation_start_date').datepicker("option", "maxDate", selected);
 
             var start_date = $('#reservation_start_date').datepicker('getDate');
-            var end_date   = $(this).datepicker('getDate');
-            var days       = (end_date - start_date)/1000/60/60/24 + 1
+            var end_date = $('#reservation_end_date').datepicker('getDate');
+            var days = (end_date - start_date)/1000/60/60/24 + 1;
 
             var input = {
               'start_date': start_date,
-              'end_date' : end_date,
-              'gear_id' : <%= @gear.id %>
+              'end_date': end_date
             }
 
             $.ajax({
-              url: "/preview",
-              data: input,
+              url: '<%= preview_gear_path(@gear) %>',
+              data: input, 
               success: function(data) {
 
-                if (data.conflict) {
-                  $('#message').text("This date range is not available.");
+                if(data.conflict) {
+                  $('#message').text("These dates are not available.");
                   $('#preview').hide();
-                  $('#btn_book').attr('disabled', true);
-
+                  $('#btn-book').attr('disabled', true);
                 } else {
-                  
+                  $('#message').text("");
                   $('#preview').show();
-                  $('#btn_book').attr('disabled', false);
+                  $('#btn-book').attr('disabled', false);
 
                   var total = days * <%= @gear.price %>
                   $('#reservation_days').text(days);
-                  $('#reservation_sum').text(total);
-                  $('#reservation_total').val(total);
+                  $('#reservation_total').text(total);
                 }
               }
             });
@@ -183,8 +148,6 @@
     });
 
 
-
   });
-</script>
 
--->
+</script>

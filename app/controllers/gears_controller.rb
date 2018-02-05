@@ -75,20 +75,45 @@ class GearsController < ApplicationController
     end
   end
 
+  # Reservations
+  def preload
+    today = Date.today
+    reservations = @gear.reservations.where("start_date >= ? OR end_date >= ?", today, today)
+    
+    render json: reservations
+  end
+
+  def preview
+    start_date = Date.parse(params[:start_date])
+    end_date = Date.parse(params[:end_date])
+
+    output = {
+      conflict: is_conflict(start_date, end_date, @gear)
+    }
+
+    render json: output
+    
+  end
+
   private
-  def set_gear
-    @gear = Gear.find(params[:id])
-  end
+    def is_conflict(start_date, end_date, gear)
+      check = gear.reservations.where("? < start_date AND end_date < ?", start_date, end_date)
+      check.size > 0? true : false
+    end
 
-  def is_authorized
-    redirect_to root_path, alert: "You don't have permission" unless current_user.id == @gear.user_id
-  end
+    def set_gear
+      @gear = Gear.find(params[:id])
+    end
 
-  def is_ready_gear
-    !@gear.price.blank? && !@gear.listing_name.blank? && !@gear.photos.blank? && !@gear.location.blank?
-  end
+    def is_authorized
+      redirect_to root_path, alert: "You don't have permission" unless current_user.id == @gear.user_id
+    end
 
-  def gear_params
-    params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location, :price)
-  end
+    def is_ready_gear
+      !@gear.price.blank? && !@gear.listing_name.blank? && !@gear.photos.blank? && !@gear.location.blank?
+    end
+
+    def gear_params
+      params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location, :price)
+    end
 end
