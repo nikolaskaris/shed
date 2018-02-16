@@ -11,7 +11,7 @@ class ReservationsController < ApplicationController
       end_date = Date.parse(reservation_params[:end_date])
       days = (end_date - start_date).to_i + 1
 
-      @reservation = current_user.reservation.build(reservation_params)
+      @reservation = current_user.reservations.build(reservation_params)
       @reservation.gear = gear
       @reservation.price = gear.price
       @reservation.total = gear.price * days
@@ -29,6 +29,7 @@ class ReservationsController < ApplicationController
   def your_bookings
     @gears = current_user.gears
   end
+  
   private
 
     def reservation_params

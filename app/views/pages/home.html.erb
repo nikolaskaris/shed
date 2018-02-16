@@ -1,64 +1,61 @@
 <%= form_tag search_path, method: :get do %>
   <div class="row">
-    <div class="col-md-3">
-      <%= text_field_tag :search, params[:search], placeholder: "Where do you want to go?", class: "form-control" %>
+    <div class="col-md-6">
+      <%= text_field_tag :search, params[:search], placeholder: "Where are you going?", class: "form-control" %>
     </div>
     <div class="col-md-3">
-      <%= text_field_tag :gear_type, params[:gear_type], placeholder: "What do you want to rent?", class: "form-control" %>
+      <%= text_field_tag :start_date, params[:start_date], placeholder: "Start Date", class: "form-control datepicker" %>
     </div>
-    <div class="col-md-2">
-      <%= text_field_tag :start_date, params[:start_date], placeholder: "Start Date", class: "form-control" %>
+    <div class="col-md-3">
+      <%= text_field_tag :end_date, params[:end_date], placeholder: "End Date", class: "form-control datepicker" %>
     </div>
-    <div class="col-md-2">
-      <%= text_field_tag :end_date, params[:end_date], placeholder: "End Date", class: "form-control" %>
-    </div>
-    <div class="col-md-2">
-      <%= submit_tag "Search", class: "btn btn-primary" %>
+  </div>
+  <br><br>
+
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <%= submit_tag "Search", class: "btn btn-normal btn-block" %>
     </div>
   </div>
 <% end %>
 
-<br>
+<br><hr><br>
+
+<!-- GEARS -->
+<div><h3>Gear</h3></div>
 
 <div class="row">
-  <% @gears.each do |gear| %>
+  <% @gears.each do |gear| %>      
     <div class="col-md-4">
       <div class="panel panel-default">
-        <div class="panel-heading preview">
-          <%= image_tag gear.photos[0].image.url(:medium) if gear.photos.length > 0 %>
+        <div class="panel panel-heading preview">
+          <%= image_tag gear.cover_photo(:medium) %>
         </div>
         <div class="panel-body">
-        <%= image_tag avatar_url(gear.user), class: "img-circle avatar-small" %>&nbsp;
-          <%= link_to gear.listing_name, gear %>
+          <%= link_to gear.listing_name, gear %><br>
         </div>
-      </div>
+      </div>    
     </div>
-
   <% end %>
 </div>
 
+<script>
+  $('#start_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',     // Change this maxDate to allow users to book further out than 3 months
+    onSelect: function(selected) {
+      $('#end_date').datepicker("option", "minDate", selected);
+      $('#end_date').attr("disabled", false);
+    }
+  });
 
-<script type="text/javascript">
-  $(function() {
-    $("#start_date").datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0, 
-      maxDate: '3m',
-      onSelect: function(selected) {
-        $('#end_date').datepicker("option", "minDate", selected);
-        $('#end_date').attr('disabled', false);
-      }
-    });
-
-    $("#end_date").datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0, 
-      maxDate: '3m',
-      onSelect: function(selected) {
-        $('#start_date').datepicker("option", "maxDate", selected);
-      }
-    });
-  })
-
-
+  $('#end_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',     // Change this maxDate to allow users to book further out than 3 months
+    onSelect: function(selected) {
+      $('#start_date').datepicker("option", "maxDate", selected);
+    }
+  });
 </script>

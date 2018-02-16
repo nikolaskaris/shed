@@ -4,10 +4,16 @@ one:
   comment: MyText
   star: 1
   gear: one
-  user: one
+  reservation: one
+  borrower: one
+  owner: one
+  type: 
 
 two:
   comment: MyText
   star: 1
   gear: two
-  user: two
+  reservation: two
+  borrower: two
+  owner: two
+  type: 

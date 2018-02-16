@@ -1,128 +1,87 @@
-<div id="wrapper">
-  
-  <div id="sidebar">
-    <div id="widget" class="sticky">
+<div id="main">
+  <div id="left">
+    <!-- SEARCH PANEL -->
+    <div class="row">
+      <br>
+      <div id="collapsePanel">
+        
+        <%= search_form_for @search, url: search_path do |f| %>
 
-      <script>
-          function initMap() {
-            var gearLocation = {
-              <% if @arrGear.length > 0 %>
-                lat: <%= @arrGear[0].latitude %>, lng: <%= @arrGear[0].longitude %>
-              <% else %>
-                lat: 44.5403, lng: -78.5463
-              <% end %>
-            };
-            var map = new google.maps.Map(document.getElementById('widget'), {
-              zoom: 14,
-              center: gearLocation
-            });
-            <% @arrGear.each do |gear| %>
-              var marker = new google.maps.Marker({
-                position: {lat: <%= gear.latitude %>, lng: <%= gear.longitude %>},
-                map: map,
-              });
-            <% end %>
-          }
-        </script>
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC18iSndZV_8QnbWOareqa9PUwJ6fPrTvQ&callback=initMap">
-        </script>
-      
-    </div>    
-    </div>
-
-  <div id="article">
-    
-  <div class="row">
-
-    <div class="col-md-12">
-
-      <%= search_form_for @search, url: search_path do |f| %>
-
-        <div class="row">
-          <div class="col-md-6">
-            <%= text_field_tag :start_date, params[:start_date], placeholder: "Start Date", class: "form-control" %>
-          </div>
-          <div class="col-md-6">
-            <%= text_field_tag :end_date, params[:end_date], placeholder: "End Date", class: "form-control" %>
-          </div>
-
-        </div>
-
-        <hr>
-
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Activity</label>
-              <%= f.select :activity, [["Surfing", "Surfing"], ["Skiing", "Skiing"], ["Biking", "Biking"]],
-                prompt: "Select...", class: "form-control" %>
+          <div class="row">
+            <div class="col-md-8">
+              <label>Price range:</label>
+            </div>
+            <div class="col-md-2">
+              <label>Min Price:</label>
+              <%= f.text_field :price_gteq, class: "form-control" %>
+            </div>
+            <div class="col-md-2">
+              <label>Max Price:</label>
+              <%= f.text_field :price_lteq, class: "form-control" %>
             </div>
           </div>
+          <hr>
 
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Gear Type</label>
-              <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Bike", "Bike"]],
-                prompt: "Select...", class: "form-control" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= text_field_tag :start_date, params[:start_date], readonly: true, placeholder: "Start Date", class: "form-control datepicker" %>
+            </div>
+            <div class="col-md-6">
+              <%= text_field_tag :end_date, params[:end_date], readonly: true, placeholder: "End Date", class: "form-control datepicker" %>
             </div>
           </div>
-        </div>
+          <hr>
 
-        <br>
-
-        <div class="row">
-          <%= f.submit "Search", class: "btn btn-primary" %>
-        </div>
-
-      <% end %>
-
-      <hr>
+          <div class="row text-center">
+            <%= f.submit "Search", class: "btn btn-form" %>
+          </div>
+        <% end %>
+      </div>
+      <br>
 
       <div class="row">
-        <% @arrGear.each do |gear| %>
-          <div class="col-md-6">
+        <% @arrGear.each do |gear| %>      
+          <div class="col-md-4">
             <div class="panel panel-default">
-              <div class="panel-heading preview">
-                <%= image_tag gear.photos[0].image.url(:medium) if gear.photos.length > 0 %>
+              <div class="panel panel-heading preview">
+                <%= image_tag gear.cover_photo(:medium) %>
               </div>
               <div class="panel-body">
-                <%= link_to gear.listing_name, gear %>
+                <%= link_to gear.listing_name, gear %><br>
               </div>
-            </div>
+            </div>    
           </div>
-
         <% end %>
       </div>
 
-    </div>
-
   </div>
 
-  </div>
+  <div id="right">
+    <!-- MAP WILL BE HERE -->
 
+  </div>
 </div>
 
-<script type="text/javascript">
-  $(function() {
-    $("#start_date").datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0, 
-      maxDate: '3m'
-      onSelect: function(selected) {
-        $('#end_date').datepicker("option", "minDate", selected);
-        $('#end_date').attr('disabled', false);
-      }
-    });
+<script>
+  $('#start_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',     // Change this maxDate to allow users to book further out than 3 months
+    onSelect: function(selected) {
+      $('#end_date').datepicker("option", "minDate", selected);
+      $('#end_date').attr("disabled", false);
+    }
+  });
 
-    $("#end_date").datepicker({
-      dateFormat: 'dd-mm-yy',
-      minDate: 0, 
-      maxDate: '3m'
-      onSelect: function(selected) {
-        $('#start_date').datepicker("option", "maxDate", selected);
-      }
-    });
-  })
-
+  $('#end_date').datepicker({
+    dateFormat: 'dd-mm-yy',
+    minDate: 0,
+    maxDate: '3m',     // Change this maxDate to allow users to book further out than 3 months
+    onSelect: function(selected) {
+      $('#start_date').datepicker("option", "maxDate", selected);
+    }
+  });
 </script>
+
+
 

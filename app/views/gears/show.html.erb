@@ -103,6 +103,20 @@
     <hr>
 
 
+    <!-- REVIEWS -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>
+          <%= pluralize(@borrower_reviews.count, "Review") %>
+          <span id="average_rating"></span>
+        </h3>
+        <div class="container">
+          <div><%= render "reviews/borrower_list" %></div>
+        </div>
+      </div>
+    </div>
+    <br><hr>
+
     <!-- GOOGLE MAP -->
     <div class="row">
       <div class="col-md-12">
@@ -166,37 +180,11 @@
 
   </div>
 
-  <!-- RIGHT PANEL -->
   
-</div>
-
-
-    
-
-
-    <!-- Reviews --> 
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Reviews <span id="average_rating"></span> (<%= @reviews.count %>)</h3>
-        <div class="container">
-          <div>
-            <%= render 'reviews/form' if @booked && !@hasReview %>
-          </div>
-          <div>
-            <%= render 'reviews/list' %>
-          </div>
-        </div>
-      </div> 
-    </div>
-
-
-  </div>
-</div>
-
-<script type="text/javascript">
+<script>
   $('#average_rating').raty({
     path: '/assets',
     readOnly: true,
     score: <%= @gear.average_rating %>
   });
-</script> 
+</script>

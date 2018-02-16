@@ -25,7 +25,7 @@ gem 'geocoder'
 gem 'jquery-ui-rails', '~>5.0'
 gem 'private_pub'
 gem 'thin'
-gem 'ransack'
+gem 'ransack', '~> 1.7'
 
 gem 'figaro'
 

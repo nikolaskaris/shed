@@ -277,7 +277,7 @@ DEPENDENCIES
   paperclip
   private_pub
   rails (~> 5.0.2)
-  ransack
+  ransack (~> 1.7)
   sass-rails (>= 3.2)
   sdoc (~> 0.4.0)
   spring

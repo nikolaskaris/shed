@@ -24,18 +24,13 @@ Rails.application.routes.draw do
     resources :messages, only: [:index, :create]
   end
 
-  resources :gears do
-    resources :reviews, only: [:create, :destroy]
-  end
+  resources :borrower_reviews, only: [:create, :destroy]
+  resources :owner_reviews, only: [:create, :destroy]
 
 
   get '/your_rentals' => 'reservations#your_rentals'
   get '/your_bookings' => 'reservations#your_bookings'
 
-  get '/search' => 'pages#search'
-
-
-  # ------ Second Tutorial -------#
-  get 'dashboard' => 'dashboards#index'
+  get 'search' => 'pages#search'
  
 end

@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
 
   has_many :gears
   has_many :reservations
-  has_many :reviews
+
+  has_many :borrower_reviews, class_name: "BorrowerReview", foreign_key: "borrower_id"
+  has_many :owner_reviews, class_name: "OwnerReview", foreign_key: "owner_id"
   
 end

@@ -1,27 +1,28 @@
 class PagesController < ApplicationController
   def home
-    @gears = Gear.all
+    @gears = Gear.where(active: true).limit(3)
   end
 
   def search
-    
+    # STEP 1
     if params[:search].present? && params[:search].strip != ""
-      session[:gear_search] = params[:search]
+      session[:loc_search] = params[:search]
     end
 
-    arrResult = Array.new
-
-    if session[:gear_search] && session[:gear_search] != ""
-      @gears_address = Gear.near(session[:gear_search], 5, order: 'distance')
+    # STEP 2
+    if session[:loc_search] && session[:loc_search] != ""
+      @gears_address = Gear.where(active: true).near(session[:loc_search], 5, order: 'distance')
     else
-      @gears_address = Gear.all
+      @gears_address = Gear.where(active: true).all
     end
 
+    # STEP 3
     @search = @gears_address.ransack(params[:q])
     @gears = @search.result
 
     @arrGear = @gears.to_a
 
+    # STEP 4
     if (params[:start_date] && params[:end_date] && !params[:start_date].empty? && !params[:end_date].empty?)
 
       start_date = Date.parse(params[:start_date])
@@ -41,10 +42,7 @@ class PagesController < ApplicationController
         if not_available.length > 0
           @arrGear.delete(gear)
         end
-
-
       end
     end
-
   end
 end
