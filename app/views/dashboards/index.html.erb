@@ -12,6 +12,9 @@
           <% if current_user.confirmation_token %>
             <li>Email Address<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
           <% end %>
+          <% if current_user.phone_verified %>
+            <li>Phone Number<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% end %>
         </ul>
       </div>
     </div>  
@@ -23,17 +26,17 @@
     <div class="panel panel-default">
       <div class="panel-heading">Notifications</div>
       <div class="panel-body">
-
       </div>
     </div>
 
     <!-- Your Listings -->
     <div class="panel panel-default">
       <div class="panel-heading">Your Listings (<%= @gears.length %>) </div>
-      <div class="panel-body">
-        
+      <div class="panel-body"> 
+        <%= render partial: "gears/gears_list", locals: {gears: @gears} %>       
       </div>
     </div>
-    
+
   </div>
+
 </div>

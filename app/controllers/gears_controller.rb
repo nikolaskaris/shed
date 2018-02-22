@@ -74,7 +74,7 @@ class GearsController < ApplicationController
   # Reservations
   def preload
     today = Date.today
-    reservations = @gear.reservations.where("start_date >= ? OR end_date >= ?", today, today)
+    reservations = @gear.reservations.where("(start_date >= ? OR end_date >= ?) AND status = ?", today, today, 1)
     
     render json: reservations
   end
@@ -93,7 +93,7 @@ class GearsController < ApplicationController
 
   private
     def is_conflict(start_date, end_date, gear)
-      check = gear.reservations.where("? < start_date AND end_date < ?", start_date, end_date)
+      check = gear.reservations.where("(? < start_date AND end_date < ?) AND status = ?", start_date, end_date, 1)
       check.size > 0? true : false
     end
 
@@ -110,6 +110,6 @@ class GearsController < ApplicationController
     end
 
     def gear_params
-      params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location, :price)
+      params.require(:gear).permit(:activity, :gear_type, :size, :listing_name, :summary, :location, :price, :active, :instant)
     end
 end

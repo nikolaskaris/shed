@@ -1,22 +1,33 @@
-/*
- *= require jquery-ui/datepicker
-*/
-
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "toastr";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+@import "fullcalendar";
 
 body {  
   color: #565a5c;
   background-color: #F8F8F8;
+  font-family: "Varela Round", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+a {
+  color: #00A699;
 }
 
 .container {
   width: 80%;
 }
 
+.text-babu, .icon-babu {
+  color: #00A699;
+}
+
+.text-red, .icon-red {
+  color: #FF5A5F;
+}
+
+// NAVBARS
 .navbar-default {
   background-color: #FFFFFF;
 }
@@ -27,6 +38,63 @@ body {
   font-weight: 400;
 }
 
+
+/* BUTTONS */
+.btn-block {
+  display: block;
+  white-space: normal;
+  width: 100%;
+}
+
+.btn {
+  color: #fff;
+  border-radius: 5px;
+  font-weight: bold;
+  padding: 9px 27px;
+}
+
+.btn-small {
+  padding: 5px 15px;
+  margin-top: 15px;
+}
+
+.btn:hover, .btn:focus {
+  color: #fff;
+}
+
+.btn.btn-default {
+  width: 100%;
+  border-color: #c4c4c4;
+  background: white;
+  color: #484848;
+  border-radius: 2px;
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+.btn.btn-normal {
+  border: 1px solid #ff5a5f;
+  background-color: #ff5a5f;
+}
+
+.btn.btn-normal:active {
+  outline: none;
+  border-color: #e00007;
+  background-color: #e00007;
+}
+
+.btn.btn-form {
+  border: 1px solid #00A699;
+  background-color: #00A699;
+}
+
+.btn.btn-form:active {
+  outline: none;
+  border-color: #066165;
+  background-color: #066165;
+}
+
+/* OLD BUTTONS
 .btn-primary.btn {
   border: 1px solid #ff5a5f;
   border-radius: 2px;
@@ -55,6 +123,9 @@ body {
   padding: 10px 0;
   margin-top: 10px; 
 }
+*/
+
+/* PANELS */ 
 
 .panel-default .panel-heading {
   color: #565a5c;
@@ -85,6 +156,8 @@ body {
   line-height: 25px;
 }
 
+/* AVATARS */
+
 .avatar-small {
   width: 28px;
 }
@@ -100,6 +173,8 @@ body {
 .avatar-full {
   width: 100%;
 }
+
+/* FORMS */
 
 .form-group {
   margin-bottom: 25px;
@@ -117,6 +192,15 @@ body {
 
 .form-group textarea {
   border: 1px solid #00A699;
+}
+
+.form-group input[type="radio"] {
+  height: 15px;
+  margin-right: 10px;
+}
+
+.btn-group label {
+  margin-right: 15px;
 }
 
 .form-group select {
@@ -162,6 +246,8 @@ body {
   width: 1.25em;
   color: #00A699;
 }
+
+/* SIDEBAR */ 
 
 .sidebar-list {
   padding-left: 0;
@@ -211,7 +297,8 @@ select {
 }
 
 
-/* Photos */
+/* PHOTOS */
+
 .btn-file {
   position: relative;
   overflow: hidden;
@@ -263,6 +350,12 @@ select {
   background-color: white;
   border: 1px solid #00A699;
   text-align: center;
+}
+
+.message-alert {
+  color: #d43242;
+  font-size: 14px;
+  padding-top: 10px;
 }
 
 .wide {
@@ -332,4 +425,50 @@ select {
   right: 0;
   width: 450px;
   height: 100%;
+}
+
+.map_price {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #00A699;
+}
+
+/* Calendar */
+
+.fc-content.Waiting {
+  background-color: #C9CC6D;
+}
+
+.fc-past {
+  background-color: lightgray;
+}
+
+.fc-day {
+  position: relative;
+}
+
+.fc-content {
+  background-color: #00A699;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.fc-event {
+  border: 0px;
+  background-color: transparent;
+}
+
+.fc-title {
+  font-size: 14px;
+  position: relative;
+  top: 7px;
+  left: 20px;
+}
+
+.day-price {
+  position: absolute;
+  color: #EAA90B;
+  bottom: 2px;
+  right: 2px;
 }

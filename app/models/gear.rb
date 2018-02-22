@@ -1,10 +1,13 @@
 class Gear < ApplicationRecord
+  enum instant: {Request: 0, Instant: 1}
+
   belongs_to :user
   has_many   :photos
   has_many   :reservations
   
 
   has_many   :borrower_reviews
+  has_many   :calendars
 
   geocoded_by :location
   after_validation :geocode, if: :location_changed?

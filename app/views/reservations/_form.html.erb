@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <span><i class="fa fa-bolt" style="color: #ffb400"></i> $<%= @gear.price %></span>
-    <span class="pull-right">Per Night</span>
+    <span><% if @gear.Instant? %><i class="fa fa-bolt" style="color: #ffb400"></i> <% end %>$<%= @gear.price %></span>
+    <span class="pull-right">Per Day</span>
   </div>
   <div class="panel-body">
     <%= form_for ([@gear, @gear.reservations.new]) do |f| %>
@@ -37,7 +37,12 @@
       </div>
 
       <br/>
-      <%= f.submit "Book Now", id: "btn-book", class: "btn btn-normal btn-block", disabled: true %>
+
+      <% if @gear.Instant? %>
+        <%= f.submit "Book Now", id: "btn-book", class: "btn btn-normal btn-block", disabled: true %>
+      <% else %>
+        <%= f.submit "Request Now", id: "btn-book", class: "btn btn-normal btn-block", disabled: true %>
+      <% end %>    
     <% end %>
   </div>
 </div>

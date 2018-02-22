@@ -2,14 +2,23 @@
   <div id="left">
     <!-- SEARCH PANEL -->
     <div class="row">
+      <div class="col-md-offset-4 col-md-4">
+        <button id="filter" class="btn btn-default" data-toggle="collapse" data-target="#collapsePanel">
+          More filters <i class="fa fa-chevron-down"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="row">
       <br>
-      <div id="collapsePanel">
+      <div class="collapse" id="collapsePanel">
         
-        <%= search_form_for @search, url: search_path do |f| %>
+        <%= search_form_for @search, url: search_path, remote: true do |f| %>
 
           <div class="row">
             <div class="col-md-8">
               <label>Price range:</label>
+              <div id="slider-range"></div>
             </div>
             <div class="col-md-2">
               <label>Min Price:</label>
@@ -39,19 +48,8 @@
       </div>
       <br>
 
-      <div class="row">
-        <% @arrGear.each do |gear| %>      
-          <div class="col-md-4">
-            <div class="panel panel-default">
-              <div class="panel panel-heading preview">
-                <%= image_tag gear.cover_photo(:medium) %>
-              </div>
-              <div class="panel-body">
-                <%= link_to gear.listing_name, gear %><br>
-              </div>
-            </div>    
-          </div>
-        <% end %>
+      <div class="row", id="gear_listing">
+        <%= render partial: "gears/gears_list", locals: {gears: @arrGear} %>
       </div>
 
   </div>
@@ -59,8 +57,48 @@
   <div id="right">
     <!-- MAP WILL BE HERE -->
 
+    <div id="map" style="width: 100%; height: 100%">
+      
+      <script src="https://maps.googleapis.com/maps/api/js"></script>
+      <script>
+        function initialize(gears) {
+          var location = {lat: 44.5403, lng: -78.5463}
+
+          if (gears.length > 0) {
+            location = {lat: gears[0].latitude , lng: gears[0].longitude}
+          }
+
+          var map = new google.maps.Map(document.getElementById('map'), {
+            center : location,
+            zoom: 12
+          });
+
+          var marker, infowindow;
+
+          gears.forEach(function(gear) {
+            marker = new google.maps.Marker({
+              position: {lat: gear.latitude, lng: gear.longitude},
+              map: map
+            });
+
+            infowindow = new google.maps.InfoWindow({
+              content: "<div class='map_price'>$" + gear.price + "</div>"
+            });
+
+            infowindow.open(map, marker);
+          })
+        }
+
+        google.maps.event.addDomListener(window, 'load', function() {
+          initialize(<%= raw @arrGear.to_json %>)
+        });
+
+      </script>
+    </div>
   </div>
 </div>
+
+
 
 <script>
   $('#start_date').datepicker({
@@ -81,7 +119,39 @@
       $('#start_date').datepicker("option", "maxDate", selected);
     }
   });
+
+  var open = true;
+
+  $('#filter').click(function() {
+    if (open) {
+      $('#filter').html("More filters <i class='fa fa-chevron-up'></i>")
+    } else {
+      $('#filter').html("More filters <i class='fa fa-chevron-down'></i>")
+    }
+    open = !open;
+  });
 </script>
 
+<script>
+  $(function() {
+    $("#q_price_gteq").val('10');
+    $("#q_price_lteq").val('75');
+    
+    $("#slider-range").slider({
+      range: true,
+      min: 0,
+      max: 150,
+      values: [10, 75],
+      slide: function(event, ui) {
+        $("#q_price_gteq").val(ui.values[0]);
+        $("#q_price_lteq").val(ui.values[1]);
+      }
+    });
+
+    $(".ui-widget-header").css('background', '#00A699');
+    $(".ui-state-default, .ui-widget-content").css('background', 'white');
+    $(".ui-state-default, .ui-widget-content").css('border-color', '#00A699');
+  })
+</script>
 
 

@@ -13,8 +13,12 @@
       <div class="panel-heading">Verification</div> 
       <div class="panel-body">
         <ul class="sidebar-list">
-          <li>Email Address <span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
-          <li>Phone Number <span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% if @user.confirmation_token %>
+            <li>Email Address <span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% end %>
+          <% if @user.phone_verified %>
+            <li>Phone Number<span class="pull-right icon-babu"><i class="fa fa-check-circle-o"></i></span></li>
+          <% end %>
         </ul>
       </div>
     </div>
@@ -30,18 +34,7 @@
     <h4>Listings (<%= @gears.length %>)</h4><br>
 
     <div class="row">
-      <% @gears.each do |gear| %>      
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel panel-heading preview">
-              <%= image_tag gear.cover_photo(:medium) %>
-            </div>
-            <div class="panel-body">
-              <%= link_to gear.listing_name, gear %><br>
-            </div>
-          </div>    
-        </div>
-      <% end %>
+      <%= render partial: "gears/gears_list", locals: {gears: @gears} %>
     </div>
     
     <br>

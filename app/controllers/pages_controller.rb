@@ -1,4 +1,4 @@
-class PagesController < ApplicationController
+ class PagesController < ApplicationController
   def home
     @gears = Gear.where(active: true).limit(3)
   end
@@ -31,12 +31,14 @@ class PagesController < ApplicationController
       @gears.each do |gear|
 
         not_available = gear.reservations.where(
-          "(? <= start_date AND start_date <= ?)
+          "((? <= start_date AND start_date <= ?)
           OR (? <= end_date AND end_date <= ?)
-          OR (? <= start_date AND ? < end_date)",
+          OR (? <= start_date AND ? < end_date))
+          AND status = ?",
           start_date, end_date,
           start_date, end_date,
-          start_date, end_date
+          start_date, end_date,
+          1
           ).limit(1)
 
         if not_available.length > 0

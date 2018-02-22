@@ -8,47 +8,63 @@
       <%= form_for @gear, html: {multipart: true} do |f| %>
 
         <div class="row">
-          <div class="col-md-6 select">
+          <div class="col-md-3 select">
             <div class="form-group">
+              <label>Activity</label>
               <%= f.select :activity, [["Surfing", "Surfing"], ["Skiing", "Skiing"], ["Biking", "Biking"]],
               id: "activity", prompt: "Activity", class: "form-control" %>
             </div>
           </div>
 
-            <div class="col-md-6 select">
+            <div class="col-md-3 select">
               <div class="form-group">
+                <label>Gear Type</label>
                 <%= f.select :gear_type, [["Surfboard", "Surfboard"], ["Skis", "Skis"], ["Mountain Bike", 
                 "Mountain Bike"], ["Road Bike", "Road Bike"], ["Other", "Other"]], id: "gear_type", 
-                prompt: "Gear Type", class: "form-control" %>
+                prompt: "Select...", class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="col-md-3 select">
+              <div class="form-group">
+                <label>Size</label>
+                <%= f.text_field :size, placeholder: "Size",  id: "gear_type", prompt: "Select...", class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="col-md-3 select">
+              <div class="form-group">
+                <label>Booking Type</label>
+                <%= f.select :instant, Gear.instants.map {|key, value| [key.humanize, key]}, selected: 'Instant', prompt: "Select...", class: "form-control" %>
               </div>
             </div>
           </div>
+        
 
         <div class="row">
+          <div class="col-md-12">
             <div class="form-group">
-              <label>Size</label>
-              <%= f.text_field :size, placeholder: "Size",  id: "gear_type", prompt: "Select...", class: "form-control" %>
+              <label>Listing Name</label>
+              <%= f.text_field :listing_name, placeholder: "Listing Name", class: "form-control" %>
             </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group">
-            <label>Listing Name</label>
-            <%= f.text_field :listing_name, placeholder: "Listing Name", class: "form-control" %>
           </div>
         </div>
 
         <div class="row">
-          <div class="form-group">
-            <label>Summary</label>
-            <%= f.text_area :summary, rows: 5, placeholder: "Describe your gear", class: "form-control" %>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Summary</label>
+              <%= f.text_area :summary, rows: 5, placeholder: "Describe your gear", class: "form-control" %>
+            </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="form-group">
-            <label>Location</label>
-            <%= f.text_field :location, placeholder: "What is the pickup address?", class: "form-control" %>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Location</label>
+              <%= f.text_field :location, placeholder: "What is the pickup address?", class: "form-control", id: "autoaddress" %>
+            </div>
           </div>
         </div>
 
@@ -87,3 +103,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(function() {
+    $('#autoaddress').geocomplete();
+  });
+</script>

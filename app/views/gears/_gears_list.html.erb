@@ -1,0 +1,23 @@
+<% gears.each do |gear| %>      
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel panel-heading preview">
+        <%= image_tag gear.cover_photo(:medium) %>
+      </div>
+      <div class="panel-body">
+        <%= link_to gear.listing_name, gear %><br>
+        $<%= gear.price %> - <%= gear.gear_type %>
+        <div id="star_<%= gear.id %>"></div> <%= pluralize(gear.average_rating, "review")%>
+      </div>
+    </div>    
+  </div>
+
+  <script>
+    $('#star_<%= gear.id %>').raty({
+          path: '/assets',
+          readOnly: true,
+          score: <%= gear.average_rating %>
+        });
+  </script>
+<% end %>
+

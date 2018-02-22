@@ -17,6 +17,7 @@
           <div class="row">
             <div class="col-md-2">
               <%= rental.start_date.strftime('%v') %>
+              <p><%= rental.status %></p>
             </div>
             <div class="col-md-2">
               <%= link_to gear_path(rental.gear) do %>
@@ -33,7 +34,7 @@
               </span>
             </div>
             <div class="col-md-3 text-right">
-              <%= render partial: "reviews/borrower_form", locals: { reservation: rental } %> 
+              <%= render partial: "reviews/borrower_form", locals: { reservation: rental } if rental.Approved? %> 
             </div>
           </div>
           <hr>
