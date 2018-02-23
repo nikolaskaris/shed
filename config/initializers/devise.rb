@@ -263,4 +263,6 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
 
+  config.omniauth :stripe_connect, 'ca_CNT2Qebxh0M8qP14PHFSc6NdwNtlIqDp', 'sk_test_MaC19V3Rl4vHUgCnldU4BaL8', scope: 'read_write', stripe_landing: 'login'
+
 end
