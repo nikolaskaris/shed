@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20180223154601) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "calendars", force: :cascade do |t|
     t.date     "day"
     t.integer  "price"
@@ -19,7 +22,7 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.integer  "gear_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["gear_id"], name: "index_calendars_on_gear_id"
+    t.index ["gear_id"], name: "index_calendars_on_gear_id", using: :btree
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -44,7 +47,7 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.float    "longitude"
     t.boolean  "active"
     t.integer  "instant",      default: 1
-    t.index ["user_id"], name: "index_gears_on_user_id"
+    t.index ["user_id"], name: "index_gears_on_user_id", using: :btree
   end
 
   create_table "messages", force: :cascade do |t|
@@ -53,8 +56,8 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.integer  "user_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
-    t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
+    t.index ["user_id"], name: "index_messages_on_user_id", using: :btree
   end
 
   create_table "photos", force: :cascade do |t|
@@ -65,7 +68,7 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.index ["gear_id"], name: "index_photos_on_gear_id"
+    t.index ["gear_id"], name: "index_photos_on_gear_id", using: :btree
   end
 
   create_table "reservations", force: :cascade do |t|
@@ -78,8 +81,8 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.integer  "status",     default: 0
-    t.index ["gear_id"], name: "index_reservations_on_gear_id"
-    t.index ["user_id"], name: "index_reservations_on_user_id"
+    t.index ["gear_id"], name: "index_reservations_on_gear_id", using: :btree
+    t.index ["user_id"], name: "index_reservations_on_user_id", using: :btree
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -92,10 +95,10 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.string   "type"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["borrower_id"], name: "index_reviews_on_borrower_id"
-    t.index ["gear_id"], name: "index_reviews_on_gear_id"
-    t.index ["owner_id"], name: "index_reviews_on_owner_id"
-    t.index ["reservation_id"], name: "index_reviews_on_reservation_id"
+    t.index ["borrower_id"], name: "index_reviews_on_borrower_id", using: :btree
+    t.index ["gear_id"], name: "index_reviews_on_gear_id", using: :btree
+    t.index ["owner_id"], name: "index_reviews_on_owner_id", using: :btree
+    t.index ["reservation_id"], name: "index_reviews_on_reservation_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -124,9 +127,20 @@ ActiveRecord::Schema.define(version: 20180223154601) do
     t.boolean  "phone_verified"
     t.string   "stripe_id"
     t.string   "merchant_id"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "calendars", "gears"
+  add_foreign_key "gears", "users"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
+  add_foreign_key "photos", "gears"
+  add_foreign_key "reservations", "gears"
+  add_foreign_key "reservations", "users"
+  add_foreign_key "reviews", "gears"
+  add_foreign_key "reviews", "reservations"
+  add_foreign_key "reviews", "users", column: "borrower_id"
+  add_foreign_key "reviews", "users", column: "owner_id"
 end

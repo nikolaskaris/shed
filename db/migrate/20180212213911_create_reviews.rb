@@ -5,8 +5,8 @@ class CreateReviews < ActiveRecord::Migration[5.0]
       t.integer :star
       t.references :gear, foreign_key: true
       t.references :reservation, foreign_key: true
-      t.references :borrower, foreign_key: true
-      t.references :owner, foreign_key: true
+      t.references :borrower, foreign_key: { to_table: :users }
+      t.references :owner, foreign_key: { to_table: :users }
       t.string :type
 
       t.timestamps
